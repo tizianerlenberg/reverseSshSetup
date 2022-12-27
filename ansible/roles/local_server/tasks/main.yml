@@ -1,0 +1,34 @@
+---
+- name: create user
+  become: true
+  user:
+    name: "{{ rssh_username }}"
+    state: present
+- name: add secret key
+  copy:
+    src: files/id_ed25519
+    dest: ~/.ssh/id_ed25519
+- name: add public key
+  copy:
+    src: files/id_ed25519.pub
+    dest: ~/.ssh/id_ed25519.pub
+- name: install autossh
+  become: true
+  apt:
+    name: autossh
+    state: present
+    update_cache: yes
+- name: add services
+  become: true
+  template:
+    src: templates/servicefile
+    dest: "/etc/systemd/system/{{ item.remote_port }}_{{ remote_host }}_{{ item.local_port }}.service"
+  loop: "{{ local_config }}"
+
+- name: enable and start service
+  become: true
+  service:
+    name: "{{ item.remote_port }}_{{ remote_host }}_{{ item.local_port }}.service"
+    state: started
+    enabled: yes
+  loop: "{{ local_config }}"

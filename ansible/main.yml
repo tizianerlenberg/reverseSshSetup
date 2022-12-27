@@ -1,0 +1,9 @@
+---
+- name: remote server
+  hosts: remote
+  roles:
+    - remote_server
+- name: local server
+  hosts: locals
+  roles:
+    - local_server
