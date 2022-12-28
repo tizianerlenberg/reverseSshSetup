@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Environment="AUTOSSH_GATETIME=0"
-ExecStart=/usr/bin/autossh -M 0 -o "StrictHostKeyChecking accept-new" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -NR {{ item.remote_port }}:localhost:{{ item.local_port }} root@{{ hostvars[remote_host]['ansible_host'] }}  -i /home/debian/.ssh/id_ed25519
+ExecStart=/usr/bin/autossh -M 0 -o "StrictHostKeyChecking accept-new" -o "ExitOnForwardFailure=yes" -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -NR {{ item.remote_port }}:localhost:{{ item.local_port }} root@{{ hostvars[remote_host]['ansible_host'] }}  -i /home/debian/.ssh/rsshtunnel_key
 
 [Install]
 WantedBy=multi-user.target
