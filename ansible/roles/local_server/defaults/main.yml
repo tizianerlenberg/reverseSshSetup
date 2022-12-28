@@ -1,2 +1,3 @@
 ---
 rssh_username: rsshuser
+fqdn: "{{ inventory_hostname }}"
