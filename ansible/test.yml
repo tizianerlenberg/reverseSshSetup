@@ -1,0 +1,16 @@
+---
+- name: local2 server
+  hosts: local3
+  tasks:
+    - name: test
+      become: true
+      debug:
+        msg: "success"
+    - name: install autossh
+      become: true
+      become_method: "sudo"
+      become_flags: "-i"
+      apt:
+        name: autossh
+        state: present
+        update_cache: yes

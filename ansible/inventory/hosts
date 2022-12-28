@@ -3,3 +3,5 @@ remote1 ansible_host=rssh1.hs-fuwa.de ansible_port=22 ansible_user=debian
 
 [locals]
 local1 ansible_host=rssh2.hs-fuwa.de ansible_port=22 ansible_user=debian
+local2 ansible_host=192.168.0.156 ansible_port=22 ansible_user=server
+#local3 ansible_host=rssh1.hs-fuwa.de ansible_port=7022 ansible_user=server

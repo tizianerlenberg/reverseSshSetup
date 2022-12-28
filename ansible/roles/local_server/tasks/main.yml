@@ -8,6 +8,8 @@
   register: public_key
 - name: copy public key to remote
   become: true
+  become_method: "sudo"
+  become_flags: "-i"
   authorized_key:
     user: "root"
     state: present
@@ -15,28 +17,42 @@
   delegate_to: "{{ remote_host }}"
 - name: install autossh
   become: true
+  become_method: "sudo"
+  become_flags: "-i"
   apt:
     name: autossh
     state: present
     update_cache: yes
 - name: add services
   become: true
+  become_method: "sudo"
+  become_flags: "-i"
   template:
     src: templates/servicefile
     dest: "/etc/systemd/system/{{ item.remote_port }}_{{ remote_host }}_{{ item.local_port }}.service"
   loop: "{{ local_config }}"
-
+- name: print user
+  become: true
+  become_method: "sudo"
+  become_flags: "-i"
+  debug:
+    msg: "Username is: {{ ansible_user }}"
+  loop: "{{ local_config }}"
 - name: enable and start service
   become: true
+  become_method: "sudo"
+  become_flags: "-i"
   service:
-    name: "{{ item.remote_port }}_{{ remote_host }}_{{ item.local_port }}.service"
+    name: "{{ item.remote_port }}_{{ hostvars[remote_host]['ansible_host'] }}_{{ item.local_port }}.service"
     state: started
     enabled: yes
   loop: "{{ local_config }}"
 - name: restart service
   become: true
+  become_method: "sudo"
+  become_flags: "-i"
   service:
-    name: "{{ item.remote_port }}_{{ remote_host }}_{{ item.local_port }}.service"
+    name: "{{ item.remote_port }}_{{ hostvars[remote_host]['ansible_host'] }}_{{ item.local_port }}.service"
     state: restarted
     enabled: yes
   loop: "{{ local_config }}"
