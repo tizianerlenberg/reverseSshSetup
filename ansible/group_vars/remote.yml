@@ -1,6 +1,0 @@
----
-users_with_passwords:
-  - name: suser1
-    password: ssecret1
-  - name: suser2
-    password: ssecret2
